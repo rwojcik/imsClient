@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IMSClient.Page.LoginPage"
+             Title="Please login">
+    <ScrollView>
+        <StackLayout Padding="25">
+            <Entry Placeholder="User name" Text="{Binding UserName}" />
+            <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                <Label Text="Save password?" />
+                <Switch IsToggled="{Binding SavePassord}" HorizontalOptions="Start" />
+            </StackLayout>
+            <Button x:Name="ShowCredentialsButton" Text="Show credentials!" Clicked="ButtonShowCredentials" />
+            <Button Text="Login" Clicked="ButtonLogin" />
+            <Button Text="Register" Clicked="ButtonRegister"></Button>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
