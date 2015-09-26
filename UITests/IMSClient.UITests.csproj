@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6DD6578D-5029-4823-A353-A23D6E581167}</ProjectGuid>
+    <ProjectGuid>{08CBDF4D-6A26-45AC-946A-43DF9EEDFE59}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>IMSClient.UITests</RootNamespace>
     <AssemblyName>IMSClient.UITests</AssemblyName>
@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Droid\IMSClient.Droid.csproj">
-      <Project>{6E4E58FA-21BD-41BB-9BC5-ACE4F34908B9}</Project>
+      <Project>{054BC637-DEE5-4202-BB5D-6939B2020911}</Project>
       <Name>IMSClient.Droid</Name>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>

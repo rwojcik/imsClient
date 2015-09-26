@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{04F9FF6D-609D-44FC-8CBC-E7B58D822D1F}</ProjectGuid>
+    <ProjectGuid>{F9544E79-5227-466F-85C0-91837066086D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>IMSClient</RootNamespace>
     <AssemblyName>IMSClient</AssemblyName>
