@@ -1,4 +1,4 @@
-﻿namespace IMSClient.Model
+﻿namespace IMSClient.Model.User
 {
     public class UserLoginModel
     {

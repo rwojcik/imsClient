@@ -1,4 +1,5 @@
 ﻿using IMSClient.Model;
+using IMSClient.Model.User;
 using IMSClient.Respository.Impl;
 using Xamarin.Forms;
 
@@ -14,12 +15,22 @@ namespace IMSClient.Respository.Impl
             return _userLoginModel ?? (_userLoginModel = CreateLoginModel());
         }
 
-        private UserLoginModel CreateLoginModel()
+        public void Login(UserLoginModel userLoginModel)
         {
-            return new UserLoginModel
-            {
-                UserName = "DI!"
-            };
+            var url = "http://rwojcik-ims.azurewebsites.net/token";
+            
+
+
+        }
+
+        public void Register(UserRegisterModel userRegisterModel)
+        {
+            var url = "http://rwojcik-ims.azurewebsites.net/api/Account/Register";
+        }
+
+        private static UserLoginModel CreateLoginModel()
+        {
+            return new UserLoginModel();
         }
     }
 }
