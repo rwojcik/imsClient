@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using IMSClient.Extension;
@@ -18,13 +19,15 @@ namespace IMSClient.Page
         private readonly UserLoginModel _userLoginModel;
         private readonly IUserRepository _userRepository;
         private readonly INotifyPage _notifyPage;
+        private readonly IValuesRepository _valuesRepository;
         public Register Register;
         public Login Login;
 
-        public LoginPage(IUserRepository userRepository = null, INotifyPage notifyPage = null)
+        public LoginPage(IUserRepository userRepository = null, INotifyPage notifyPage = null, IValuesRepository valuesRepository = null)
         {
             _userRepository = userRepository ?? DependencyService.Get<IUserRepository>();
             _notifyPage = notifyPage ?? new NotifyPage(this);
+            _valuesRepository = valuesRepository ?? DependencyService.Get<IValuesRepository>();
 
             _userLoginModel = _userRepository.GetUserLoginModel();
 
@@ -44,6 +47,15 @@ namespace IMSClient.Page
 
         private async void ButtonLogin(object sender, EventArgs e)
         {
+            //try
+            //{
+            //    var test = await _valuesRepository.GetRestValuesAsync();
+            //    Debug.WriteLine(test);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.WriteLine(ex);
+            //}
             if (Login == null)
             {
                 _notifyPage.MissingHandler();

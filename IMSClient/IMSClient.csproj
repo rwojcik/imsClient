@@ -82,12 +82,6 @@
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp.Portable.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f">
-      <HintPath>..\packages\FubarCoder.RestSharp.Portable.Core.3.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\RestSharp.Portable.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp.Portable.HttpClient, Version=3.1.0.0, Culture=neutral, PublicKeyToken=be81bb0f53eab22f">
-      <HintPath>..\packages\FubarCoder.RestSharp.Portable.HttpClient.3.1.0\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\RestSharp.Portable.HttpClient.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net45+win8\System.Net.Http.Extensions.dll</HintPath>
       <Private>True</Private>

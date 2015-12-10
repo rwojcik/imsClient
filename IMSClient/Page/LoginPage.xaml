@@ -6,7 +6,7 @@
              Title="Please login">
     <ScrollView>
         <StackLayout Padding="25">
-            <Entry Placeholder="User name" Text="{Binding UserName}" />
+            <Entry Placeholder="User name" Text="{Binding Email}" />
             <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
                 <Label Text="Save password?" />
