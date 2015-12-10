@@ -57,7 +57,7 @@ namespace IMSClient
         }
 
 
-        private async void Login(object sender, LoginEventArgs loginEventArgs)
+        private void Login(object sender, LoginEventArgs loginEventArgs)
         {
             var dashboardPage = new DashboardPage(_userRepository);
 

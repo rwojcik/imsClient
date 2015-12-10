@@ -14,7 +14,7 @@
             </StackLayout>
             <Button x:Name="ShowCredentialsButton" Text="Show credentials!" Clicked="ButtonShowCredentials" />
             <Button Text="Login" Clicked="ButtonLogin" />
-            <Button Text="Register" Clicked="ButtonRegister"></Button>
+            <Button x:Name="Button" Text="Register" Clicked="ButtonRegister"></Button>
         </StackLayout>
     </ScrollView>
 </ContentPage>

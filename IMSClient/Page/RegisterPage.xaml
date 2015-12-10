@@ -5,7 +5,7 @@
              Title="Register yourself">
 
   <ScrollView>
-    <Label Text=""/>
+    <Label x:Name="Label" Text=""/>
 
   </ScrollView>
 
