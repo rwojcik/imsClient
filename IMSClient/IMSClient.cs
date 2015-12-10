@@ -7,34 +7,64 @@ namespace IMSClient
 {
     public class App : Application
     {
-        private readonly NavigationPage _navigationPage;
-        private readonly IUserRepository _userRepository = DependencyService.Get<IUserRepository>();
-        private readonly IValuesRepository _valuesRepository = DependencyService.Get<IValuesRepository>();
+        private NavigationPage _navigationPage;
+        private DashboardPage _dashboardPage;
+        private readonly IUserRepository _userRepository;
 
-        public App()
+        public App(IUserRepository userRepository = null )
         {
-            var loginPage = new LoginPage(_userRepository, _valuesRepository);
-            loginPage.Register += Register;
-            loginPage.Login += Login;
+            _userRepository = userRepository ?? DependencyService.Get<IUserRepository>();
 
-            MainPage = _navigationPage = new NavigationPage(loginPage);
+            MainPage = _navigationPage = new NavigationPage();
+
+            if (_userRepository.IsLogged())
+            {
+                _dashboardPage = new DashboardPage(_userRepository);
+
+                _navigationPage.PushAsync(_dashboardPage);
+            }
+            else
+            {
+                var loginPage = new LoginPage(_userRepository);
+
+                loginPage.Login += Login;
+                loginPage.Register += Register;
+
+                _navigationPage.PushAsync(loginPage);
+            }
+
         }
 
-        private void Login(object sender, LoginEventArgs loginEventArgs)
+        private async void Register(object sender, RegisterEventArgs e)
         {
-            var dashboardPage = new DashboardPage();
+            var registerPage = new RegisterPage(_userRepository);
 
-            _navigationPage.PushAsync(dashboardPage);
+            registerPage.Registered += Registered;
+            
+            await _navigationPage.PushAsync(registerPage);
         }
 
-        private void Logged(object sender, EventArgs e)
+        private async void Registered(object sender, RegisterEventArgs e)
         {
+            await _navigationPage.PopAsync();
+            
+            if (!string.IsNullOrWhiteSpace(e.Email) && _navigationPage.CurrentPage is LoginPage)
+            {
+                var loginPage = (LoginPage) _navigationPage.CurrentPage;
 
+                loginPage.WriteEmail(e.Email);
+            }
         }
 
-        private void Register(object sender, RegisterEventArgs registerEventArgs)
+
+        private async void Login(object sender, LoginEventArgs loginEventArgs)
         {
+            var dashboardPage = new DashboardPage(_userRepository);
+
+            MainPage = _navigationPage = new NavigationPage(dashboardPage);
         }
+
+
 
         protected override void OnStart()
         {

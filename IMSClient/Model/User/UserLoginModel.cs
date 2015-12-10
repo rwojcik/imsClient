@@ -1,9 +1,16 @@
-﻿namespace IMSClient.Model.User
+﻿using System;
+
+namespace IMSClient.Model.User
 {
     public class UserLoginModel
     {
-        public string UserName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public bool SavePassord { get; set; } = true;
+
+        public string TokenType { get; set; } = string.Empty;
+
+        public string Token { get; set; } = string.Empty;
+        public DateTime TokenExpires { get; set; }
     }
 }
