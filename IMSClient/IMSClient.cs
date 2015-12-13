@@ -1,4 +1,5 @@
 ﻿using System;
+using IMSClient.Helper;
 using IMSClient.Page;
 using IMSClient.Respository;
 using Xamarin.Forms;
@@ -7,12 +8,14 @@ namespace IMSClient
 {
     public class App : Application
     {
+        private readonly IServerFinder _serverFinder;
         private NavigationPage _navigationPage;
         private DashboardPage _dashboardPage;
         private readonly IUserRepository _userRepository;
 
-        public App(IUserRepository userRepository = null )
+        public App(IUserRepository userRepository = null, IServerFinder serverFinder = null)
         {
+            _serverFinder = serverFinder;
             _userRepository = userRepository ?? DependencyService.Get<IUserRepository>();
 
             MainPage = _navigationPage = new NavigationPage();
@@ -38,7 +41,7 @@ namespace IMSClient
         private async void Register(object sender, RegisterEventArgs e)
         {
             var registerPage = new RegisterPage(_userRepository);
-
+            
             registerPage.Registered += Registered;
             
             await _navigationPage.PushAsync(registerPage);
@@ -46,14 +49,9 @@ namespace IMSClient
 
         private async void Registered(object sender, RegisterEventArgs e)
         {
-            await _navigationPage.PopAsync();
-            
-            if (!string.IsNullOrWhiteSpace(e.Email) && _navigationPage.CurrentPage is LoginPage)
-            {
-                var loginPage = (LoginPage) _navigationPage.CurrentPage;
+            _userRepository.GetUserLoginModel().Email = e.Email;
 
-                loginPage.WriteEmail(e.Email);
-            }
+            await _navigationPage.PopAsync();
         }
 
 

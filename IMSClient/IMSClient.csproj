@@ -35,7 +35,6 @@
   <ItemGroup>
     <Compile Include="Extension\INotifyPage.cs" />
     <Compile Include="Extension\Impl\NotifyPage.cs" />
-    <Compile Include="Helper\Impl\ServerFinder.cs" />
     <Compile Include="Helper\IServerFinder.cs" />
     <Compile Include="IMSClient.cs" />
     <Compile Include="IMSException\RestRequestException.cs" />

@@ -34,8 +34,6 @@ namespace IMSClient.Page
             BindingContext = _userLoginModel;
             
             InitializeComponent();
-
-            //Task.Factory.StartNew(() => ShowCredentialsButton.Text = _valuesRepository.GetValues().DefaultIfEmpty("errorrrr").FirstOrDefault());
         }
 
         private void ButtonShowCredentials(object sender, EventArgs e)
@@ -47,6 +45,9 @@ namespace IMSClient.Page
 
         private async void ButtonLogin(object sender, EventArgs e)
         {
+            LoginButton.IsEnabled = false;
+            RegisterButton.IsEnabled = false;
+
             try
             {
                 var test = await _valuesRepository.GetRestValuesAsync();
@@ -63,9 +64,12 @@ namespace IMSClient.Page
                 return;
             }
 
-            await _userRepository.LoginAsync();
+            var logged = await _userRepository.LoginAsync();
 
-            if (_userRepository.IsLogged())
+            LoginButton.IsEnabled = true;
+            RegisterButton.IsEnabled = true;
+
+            if (logged)
             {
 
                 Login(this, new LoginEventArgs(_userLoginModel));
@@ -74,6 +78,7 @@ namespace IMSClient.Page
             {
                 _notifyPage.DisplayAlert("Error", "Incorrect credentials");
             }
+
         }
 
         private void ButtonRegister(object sender, EventArgs e)
@@ -85,11 +90,6 @@ namespace IMSClient.Page
             }
             
             Register(this, new RegisterEventArgs());
-        }
-
-        public void WriteEmail(string email)
-        {
-            _userLoginModel.Email = email;
         }
     }
 

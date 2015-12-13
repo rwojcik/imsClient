@@ -6,15 +6,15 @@
              Title="Please login">
     <ScrollView>
         <StackLayout Padding="25">
-            <Entry Placeholder="User name" Text="{Binding Email}" />
+            <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" />
             <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
             <StackLayout Orientation="Horizontal" HorizontalOptions="End">
                 <Label Text="Save password?" />
                 <Switch IsToggled="{Binding SavePassord}" HorizontalOptions="Start" />
             </StackLayout>
-            <Button x:Name="ShowCredentialsButton" Text="Show credentials!" Clicked="ButtonShowCredentials" />
-            <Button Text="Login" Clicked="ButtonLogin" />
-            <Button x:Name="Button" Text="Register" Clicked="ButtonRegister"></Button>
+            <!--<Button x:Name="ShowCredentialsButton" Text="Show credentials!" Clicked="ButtonShowCredentials" />-->
+            <Button x:Name="LoginButton" Text="Login" Clicked="ButtonLogin" />
+            <Button x:Name="RegisterButton" Text="Register" Clicked="ButtonRegister"></Button>
         </StackLayout>
     </ScrollView>
 </ContentPage>

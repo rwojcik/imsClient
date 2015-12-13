@@ -45,7 +45,7 @@ namespace IMSClient.Respository.Impl
 
             //return null;
 
-            string url = $"http://{_serverFinder.GetServerAddress()}/api/Values";
+            string url = $"http://{await _serverFinder.GetServerAddressAsync()}/api/Values";
 
             var request = WebRequest.Create(url);
             request.ContentType = "application/json";
@@ -53,7 +53,6 @@ namespace IMSClient.Respository.Impl
             var serializer = new JsonSerializer();
 
             using (var response = await request.GetResponseAsync())
-            // Get a stream representation of the HTTP web response:
             using (var stream = response.GetResponseStream())
             using (var sr = new StreamReader(stream))
             using (var jsonTxtReader = new JsonTextReader(sr))

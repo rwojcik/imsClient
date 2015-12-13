@@ -9,6 +9,8 @@ namespace IMSClient.Helper
 {
     public interface IServerFinder
     {
-        string GetServerAddress();
+        Task<string> GetServerAddressAsync();
+
+        bool ServerFound();
     }
 }

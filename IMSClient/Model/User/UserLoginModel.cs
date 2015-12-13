@@ -6,7 +6,7 @@ namespace IMSClient.Model.User
     {
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public bool SavePassord { get; set; } = true;
+        public bool SavePassord { get; set; } = false;
 
         public string TokenType { get; set; } = string.Empty;
 

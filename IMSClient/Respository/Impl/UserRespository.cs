@@ -37,13 +37,11 @@ namespace IMSClient.Respository.Impl
             return _userLoginModel ?? (_userLoginModel = CreateLoginModel());
         }
 
-        public async Task<UserLoginModel> LoginAsync()
+        public async Task<bool> LoginAsync()
         {
-            string url = $"http://{_serverFinder.GetServerAddress()}/token";
-
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri($"http://{_serverFinder.GetServerAddress()}/");
+                client.BaseAddress = new Uri($"http://{await _serverFinder.GetServerAddressAsync()}/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 
@@ -60,7 +58,11 @@ namespace IMSClient.Respository.Impl
                 {
                     var response = await client.PostAsync("token", content);
 
-                    if(!response.IsSuccessStatusCode) return _userLoginModel;
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        return false;
+                    }
                     
                     var result = await response.Content.ReadAsStringAsync();
                     var token = JsonConvert.DeserializeObject<Token>(result);
@@ -73,28 +75,45 @@ namespace IMSClient.Respository.Impl
                 catch (Exception e)
                 {
                     Debug.WriteLine($"type = {e.GetType()}, msg = {e.Message}");
+                    return false;
                 }
 
             }
 
-            return _userLoginModel;
+            return true;
         }
 
-        public async Task RegisterAsync()
+        public async Task<bool> RegisterAsync(UserRegisterModel userRegisterModel)
         {
-            //var client = new RestClient($"http://{_serverFinder.GetServerAddress()}/");
+            string url = $"http://{await _serverFinder.GetServerAddressAsync()}/api/Account/";
 
-            //var request = new RestRequest("api/Account/Register", Method.POST);
-            //request.AddJsonBody(new { Email = userRegisterModel.Email, Password = userRegisterModel.Password, ConfirmPassword = userRegisterModel.Password });
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //var response = await client.Execute(request);
+                var json = JsonConvert.SerializeObject(userRegisterModel);
 
-            //if (!response.IsSuccess)
-            //{
-            //    throw new RestRequestException("Request failed");
-            //}
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            throw new Exception();
+                try
+                {
+                    var response = await client.PostAsync("Register", content);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"type = {e.GetType()}, msg = {e.Message}");
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static UserLoginModel CreateLoginModel()
