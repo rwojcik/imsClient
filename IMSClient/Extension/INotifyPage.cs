@@ -4,6 +4,6 @@
     {
         void NotYetImplemented();
         void MissingHandler();
-        void DisplayAlert(string title, string message, string cancel);
+        void DisplayAlert(string title, string message, string cancel = "Dissmiss");
     }
 }

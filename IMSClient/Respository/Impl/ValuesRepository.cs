@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using IMSClient.Helper;
-using IMSClient.IMSException;
 using IMSClient.Respository.Impl;
-using Microsoft.AspNet.SignalR.Client;
-using Newtonsoft.Json;
 using Xamarin.Forms;
+using Newtonsoft.Json;
 
 [assembly: Dependency(typeof(ValuesRepository))]
 namespace IMSClient.Respository.Impl
@@ -27,7 +23,6 @@ namespace IMSClient.Respository.Impl
             _serverFinder = serverFinder ?? DependencyService.Get<IServerFinder>();
             _userRepository = userRepository ?? DependencyService.Get<IUserRepository>();
         }
-
 
         public IEnumerable<string> GetValues()
         {
@@ -50,28 +45,21 @@ namespace IMSClient.Respository.Impl
 
             //return null;
 
-            var serverAddress = _serverFinder.GetServerAddress();
-
-            string url = $"http://{serverAddress}/api/Values";
+            string url = $"http://{_serverFinder.GetServerAddress()}/api/Values";
 
             var request = WebRequest.Create(url);
             request.ContentType = "application/json";
             request.Method = "GET";
+            var serializer = new JsonSerializer();
 
             using (var response = await request.GetResponseAsync())
+            // Get a stream representation of the HTTP web response:
+            using (var stream = response.GetResponseStream())
+            using (var sr = new StreamReader(stream))
+            using (var jsonTxtReader = new JsonTextReader(sr))
             {
-                var serializer = new JsonSerializer();
-                // Get a stream representation of the HTTP web response:
-                using (var stream = response.GetResponseStream())
-                using (var sr = new StreamReader(stream))
-                using (var jsonTxtReader = new JsonTextReader(sr))
-                {
-                    return await Task.Factory.StartNew(() => serializer.Deserialize<List<string>>(jsonTxtReader));
-                }
+                return await Task.Factory.StartNew(() => serializer.Deserialize<List<string>>(jsonTxtReader));
             }
-
-
-
         }
     }
 }

@@ -15,16 +15,18 @@ namespace IMSClient.Extension.Impl
 
         public void NotYetImplemented()
         {
-            _page.DisplayAlert("Error", "Not yet implemented...", "Dismiss");
+            DisplayAlert("Error", "Not yet implemented...");
         }
         public void MissingHandler()
         {
-            _page.DisplayAlert("WTF", "Missing handler!", "Dismiss");
+            DisplayAlert("WTF", "Missing handler!");
         }
 
-        public void DisplayAlert(string title, string message, string cancel)
+        public void DisplayAlert(string title, string message, string cancel = "Dissmiss")
         {
             _page.DisplayAlert(title, message, cancel);
         }
+
+
     }
 }

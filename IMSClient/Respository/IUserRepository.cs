@@ -7,9 +7,9 @@ namespace IMSClient.Respository
     public interface IUserRepository
     {
         UserLoginModel GetUserLoginModel();
-        Task<UserLoginModel> LoginAsync(UserLoginModel userLoginModel);
+        Task<UserLoginModel> LoginAsync();
 
-        Task RegisterAsync(UserRegisterModel userRegisterModel);
+        Task RegisterAsync();
         string GetTokenType();
         string GetToken();
 

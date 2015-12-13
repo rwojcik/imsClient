@@ -42,28 +42,38 @@ namespace IMSClient.Page
         {
             var msg = $"Username: {_userLoginModel.Email}\nPassword: {_userLoginModel.Password}\nPassword saved: {_userLoginModel.SavePassord}";
 
-            _notifyPage.DisplayAlert("Credentials", msg, "Dismiss");
+            _notifyPage.DisplayAlert("Credentials", msg);
         }
 
         private async void ButtonLogin(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    var test = await _valuesRepository.GetRestValuesAsync();
-            //    Debug.WriteLine(test);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex);
-            //}
+            try
+            {
+                var test = await _valuesRepository.GetRestValuesAsync();
+                Debug.WriteLine(string.Join(", ", test));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            
             if (Login == null)
             {
                 _notifyPage.MissingHandler();
                 return;
             }
-            await _userRepository.LoginAsync(_userLoginModel);
-            
-            Login(this, new LoginEventArgs(_userLoginModel));
+
+            await _userRepository.LoginAsync();
+
+            if (_userRepository.IsLogged())
+            {
+
+                Login(this, new LoginEventArgs(_userLoginModel));
+            }
+            else
+            {
+                _notifyPage.DisplayAlert("Error", "Incorrect credentials");
+            }
         }
 
         private void ButtonRegister(object sender, EventArgs e)
