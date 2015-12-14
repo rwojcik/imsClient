@@ -12,6 +12,6 @@ namespace IMSPrototyper.ViewModels
         public string token_type { get; set; }
         public string userName { get; set; }
 
-        public DateTime expires { get; set; } = DateTime.Now.AddDays(14);
+        public DateTime expires { get; set; } = DateTime.Now;
     }
 }

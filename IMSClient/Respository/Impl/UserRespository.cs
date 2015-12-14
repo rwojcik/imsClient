@@ -118,7 +118,11 @@ namespace IMSClient.Respository.Impl
 
         private static UserLoginModel CreateLoginModel()
         {
-            return new UserLoginModel();
+            return new UserLoginModel
+            {
+                Email = "rafalwojcik3@gmail.com",
+                Password = "P@ssw0rd"
+            };
         }
 
         public string GetTokenType()

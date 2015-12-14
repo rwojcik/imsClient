@@ -1,6 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMSClient.Page.DashboardPage">
-  <Label x:Name="Label" Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+             x:Class="IMSClient.Page.DashboardPage"
+             Title="Groups">
+  <StackLayout Padding="25">
+    <Label Text="Choose group to interact with" VerticalOptions="Center" HorizontalOptions="Center" />
+    <ListView x:Name="GroupsListView" ItemSelected="ListView_OnItemSelected">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <ViewCell.ContextActions>
+              <MenuItem Clicked="OnMore" CommandParameter="{Binding .}"
+                 Text="More" />
+              <MenuItem Clicked="OnDelete" CommandParameter="{Binding .}"
+                 Text="Delete" IsDestructive="True" />
+            </ViewCell.ContextActions>
+            <StackLayout>
+              <Label Text="{Binding Name}" />
+              <Label Text="{Binding Devices.Count}"></Label>
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+    <Label Text="Choose group to interact with" VerticalOptions="Center" HorizontalOptions="Center" />
+  </StackLayout>
 </ContentPage>
