@@ -15,11 +15,11 @@ namespace IMSClient.Page
     {
         private IUserRepository _userRepository;
         private IValuesRepository _valuesRepository;
-        private IList<GroupViewModel> _groups;
-
+        private ObservableCollection<GroupViewModel> _groups;
 
         public DashboardPage(IUserRepository _userRepository = null, IValuesRepository _valuesRepository = null)
         {
+            BindingContext = this;
             _groups = new ObservableCollection<GroupViewModel>();
 
             this._userRepository = _userRepository ?? DependencyService.Get<IUserRepository>();
@@ -35,15 +35,19 @@ namespace IMSClient.Page
                 Debug.WriteLine($"ex: {e.GetType()}, msg: {e.Message}");
             }
 
-            Task.Factory.StartNew(AddDebugValues);
+            Task.Factory.StartNew(DownloadValues);
         }
 
-        private void AddDebugValues()
+        private void DownloadValues()
         {
+
             Device.StartTimer(TimeSpan.FromSeconds(2), () =>
             {
                 try
                 {
+                    StatusIndicatior.IsVisible = false;
+                    StatusIndicatior.IsRunning = false;
+                    StatusIndicatiorContentView.IsVisible = false;
                     _groups.Add(new GroupViewModel
                     {
                         Name = "Test1",
@@ -78,6 +82,9 @@ namespace IMSClient.Page
                         Name = "Test4",
                         DevicesIds = new long[] { 3, 4, 6, 8 }
                     });
+
+                    StatusLabel.Text = "Testing remove...";
+
                 }
                 catch (Exception e)
                 {
@@ -100,27 +107,32 @@ namespace IMSClient.Page
                     Debug.WriteLine($"ex: {e.GetType()}, msg: {e.Message}");
                 }
 
+                StatusLabel.Text = "Choose group to interact with";
                 return false;
             });
-
-
         }
 
-        public void OnMore(object sender, EventArgs e)
+        public void OnOpen(object sender, EventArgs e)
         {
             var mi = (MenuItem)sender;
             DisplayAlert("More Context Action", mi.CommandParameter + " more context action", "OK");
         }
 
-        public void OnDelete(object sender, EventArgs e)
-        {
-            var mi = (MenuItem)sender;
-            DisplayAlert("Delete Context Action", mi.CommandParameter + " delete context action", "OK");
-        }
-
         private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            DisplayAlert("Item selected", $"{e.SelectedItem.ToString()}", "OK");
+            if(e.SelectedItem == null) return;
+
+            DisplayAlert("Item selected", $"{e.SelectedItem}", "OK");
+
+            try
+            {
+                var listView = sender as ListView;
+                if (listView != null) listView.SelectedItem = null;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
     }
 }

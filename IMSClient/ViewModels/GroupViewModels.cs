@@ -20,6 +20,8 @@ namespace IMSPrototyper.ViewModels
         public string UpdatedBy { get; set; }
 
         public ICollection<long> DevicesIds { get; set; }
+
+        public long DevicesCount => DevicesIds?.Count ?? 0;
     }
     
     public class AddGroupViewModel
