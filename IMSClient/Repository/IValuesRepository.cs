@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IMSClient.Respository
+namespace IMSClient.Repository
 {
     public interface IValuesRepository
     {

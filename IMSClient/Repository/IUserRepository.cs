@@ -2,17 +2,20 @@
 using IMSClient.Model;
 using IMSClient.Model.User;
 
-namespace IMSClient.Respository
+namespace IMSClient.Repository
 {
     public interface IUserRepository
     {
         UserLoginModel GetUserLoginModel();
+
         Task<bool> LoginAsync();
 
         Task<bool> RegisterAsync(UserRegisterModel userRegisterModel);
-        string GetTokenType();
-        string GetToken();
 
+        string GetTokenType();
+
+        string GetToken();
+        
         bool IsLogged();
     }
 

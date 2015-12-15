@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using IMSClient.Extension;
 using IMSClient.Extension.Impl;
 using IMSClient.Model.User;
-using IMSClient.Respository;
+using IMSClient.Repository;
 using Xamarin.Forms;
 
 namespace IMSClient.Page

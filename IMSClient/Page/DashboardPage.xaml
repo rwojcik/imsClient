@@ -12,8 +12,8 @@
     <BoxView Color="Silver" HeightRequest="2" />
 
     <StackLayout Padding="25,0,25,0">
-      <ContentView x:Name="StatusIndicatiorContentView" Padding ="0,15,0,0">
-        <ActivityIndicator x:Name="StatusIndicatior" IsRunning="True" />
+      <ContentView x:Name="StatusIndicatorContentView" Padding ="0,15,0,0">
+        <ActivityIndicator x:Name="StatusIndicator" IsRunning="True" />
       </ContentView>
       <ListView x:Name="GroupsListView" ItemSelected="ListView_OnItemSelected">
         <ListView.ItemTemplate>

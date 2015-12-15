@@ -50,13 +50,15 @@
       <DependentUpon>RegisterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Respository\Impl\UserRespository.cs" />
-    <Compile Include="Respository\IUserRepository.cs" />
-    <Compile Include="Respository\IValuesRepository.cs" />
-    <Compile Include="Respository\Impl\ValuesRepository.cs" />
+    <Compile Include="Repository\IGroupRepository.cs" />
+    <Compile Include="Repository\Impl\GroupRepository.cs" />
+    <Compile Include="Repository\Impl\UserRepository.cs" />
+    <Compile Include="Repository\IUserRepository.cs" />
+    <Compile Include="Repository\IValuesRepository.cs" />
+    <Compile Include="Repository\Impl\ValuesRepository.cs" />
     <Compile Include="ViewModels\DeviceViewModels.cs" />
     <Compile Include="ViewModels\GroupViewModels.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\Token.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

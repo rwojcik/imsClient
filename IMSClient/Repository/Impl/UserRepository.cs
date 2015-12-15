@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using IMSClient.Helper;
-using IMSClient.IMSException;
 using IMSClient.Model.User;
-using IMSClient.Respository.Impl;
+using IMSClient.Repository.Impl;
+using IMSClient.ViewModels;
 using IMSPrototyper.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(UserRespository))]
-namespace IMSClient.Respository.Impl
+[assembly: Dependency(typeof(UserRepository))]
+namespace IMSClient.Repository.Impl
 {
-    public class UserRespository : IUserRepository
+    public class UserRepository : IUserRepository
     {
         private UserLoginModel _userLoginModel;
         private readonly IServerFinder _serverFinder;
 
-        public UserRespository() : this(null)
+        public UserRepository() : this(null)
         {
         }
 
-        public UserRespository(IServerFinder serverFinder = null)
+        public UserRepository(IServerFinder serverFinder = null)
         {
             _serverFinder = serverFinder ?? DependencyService.Get<IServerFinder>();
         }
@@ -44,7 +42,7 @@ namespace IMSClient.Respository.Impl
                 client.BaseAddress = new Uri($"http://{await _serverFinder.GetServerAddressAsync()}/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                
+
                 var postData = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("username", _userLoginModel.Email),
@@ -61,15 +59,16 @@ namespace IMSClient.Respository.Impl
                     if (!response.IsSuccessStatusCode)
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
+                        Debug.WriteLine($"Error logging in, response : {responseContent}");
                         return false;
                     }
-                    
-                    var result = await response.Content.ReadAsStringAsync();
-                    var token = JsonConvert.DeserializeObject<Token>(result);
 
-                    _userLoginModel.TokenType = token.token_type;
-                    _userLoginModel.Token = token.access_token;
-                    _userLoginModel.TokenExpires = token.expires;
+                    var result = await response.Content.ReadAsStringAsync();
+                    var token = JsonConvert.DeserializeObject<Token>(result.Replace(".expires", nameof(Token.Expires)).Replace("token_type", nameof(Token.TokenType)).Replace("access_token", nameof(Token.AccessToken)));
+                    
+                    _userLoginModel.TokenType = token.TokenType;
+                    _userLoginModel.Token = token.AccessToken;
+                    _userLoginModel.TokenExpires = token.Expires;
 
                 }
                 catch (Exception e)
@@ -137,7 +136,8 @@ namespace IMSClient.Respository.Impl
 
         public bool IsLogged()
         {
-            return _userLoginModel?.TokenExpires != null && _userLoginModel.TokenExpires > DateTime.Now;
+            var logged = _userLoginModel?.TokenExpires != null && _userLoginModel.TokenExpires > DateTime.Now && !string.IsNullOrWhiteSpace(_userLoginModel?.Token);
+            return logged;
         }
     }
 }

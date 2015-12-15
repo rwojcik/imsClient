@@ -4,12 +4,12 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using IMSClient.Helper;
-using IMSClient.Respository.Impl;
+using IMSClient.Repository.Impl;
 using Xamarin.Forms;
 using Newtonsoft.Json;
 
 [assembly: Dependency(typeof(ValuesRepository))]
-namespace IMSClient.Respository.Impl
+namespace IMSClient.Repository.Impl
 {
     public class ValuesRepository : IValuesRepository
     {

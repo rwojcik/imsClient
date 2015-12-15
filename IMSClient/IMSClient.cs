@@ -1,7 +1,7 @@
 ﻿using System;
 using IMSClient.Helper;
 using IMSClient.Page;
-using IMSClient.Respository;
+using IMSClient.Repository;
 using Xamarin.Forms;
 
 namespace IMSClient
@@ -41,9 +41,9 @@ namespace IMSClient
         private async void Register(object sender, RegisterEventArgs e)
         {
             var registerPage = new RegisterPage(_userRepository);
-            
+
             registerPage.Registered += Registered;
-            
+
             await _navigationPage.PushAsync(registerPage);
         }
 
@@ -55,14 +55,13 @@ namespace IMSClient
         }
 
 
-        private void Login(object sender, LoginEventArgs loginEventArgs)
+        private async void Login(object sender, LoginEventArgs loginEventArgs)
         {
             var dashboardPage = new DashboardPage(_userRepository);
 
             MainPage = _navigationPage = new NavigationPage(dashboardPage);
+            
         }
-
-
 
         protected override void OnStart()
         {

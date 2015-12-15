@@ -6,7 +6,7 @@ using IMSClient.Extension;
 using IMSClient.Extension.Impl;
 using IMSClient.Model;
 using IMSClient.Model.User;
-using IMSClient.Respository;
+using IMSClient.Repository;
 using Xamarin.Forms;
 
 namespace IMSClient.Page
@@ -56,11 +56,17 @@ namespace IMSClient.Page
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                _notifyPage.DisplayAlert("Error", "Could not connect to server!");
+                LoginButton.IsEnabled = true;
+                RegisterButton.IsEnabled = true;
+                return;
             }
             
             if (Login == null)
             {
                 _notifyPage.MissingHandler();
+                LoginButton.IsEnabled = true;
+                RegisterButton.IsEnabled = true;
                 return;
             }
 
