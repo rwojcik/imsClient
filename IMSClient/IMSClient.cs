@@ -66,10 +66,9 @@ namespace IMSClient
         private async void DashboardPageOnGroupChoose(object sender, GroupChooseEventArgs e)
         {
             var groupPage = new GroupPage(e.Group);
-
+            
             await _navigationPage.PushAsync(groupPage);
         }
-
 
         protected override void OnStart()
         {

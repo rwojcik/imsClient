@@ -111,13 +111,27 @@ namespace IMSClient.Page
             }
         }
 
-        private void OnOpen(object sender, EventArgs e)
+        private async void OnOpen(object sender, EventArgs e)
         {
+            var mi = sender as MenuItem;
+            //DisplayAlert("More Context Action", mi.CommandParameter + " more context action", "OK");
 
+            var device = mi?.CommandParameter as DeviceViewModel;
+
+            if (device != null)
+            {
+                var devicePage = new DevicePage(device);
+
+                await Navigation.PushModalAsync(devicePage);
+            }
         }
 
-        private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            if (e.SelectedItem == null) return;
+
+            //DisplayAlert("Item selected", $"{e.SelectedItem}", "OK");
+
             try
             {
                 var listView = sender as ListView;
@@ -126,6 +140,15 @@ namespace IMSClient.Page
             catch (Exception ex)
             {
                 Debug.WriteLine($"ex: {ex.GetType()}, msg: {ex.Message}");
+            }
+
+            var device = e.SelectedItem as DeviceViewModel;
+
+            if (device != null)
+            {
+                var devicePage = new DevicePage(device);
+
+                await Navigation.PushModalAsync(devicePage);
             }
         }
     }

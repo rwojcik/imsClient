@@ -27,15 +27,26 @@ namespace IMSClient.ViewModels
 
         public bool? BinarySetting { get; set; }
 
+        public string DeviceTypeString => EnumOps.GetDeviceType(DeviceType);
+
         public string Status
         {
             get
             {
-                var stringBuilder = new StringBuilder("Device type: ");
+                if (Discriminator == "Binary" && BinarySetting.HasValue)
+                {
+                    if (DeviceType == DeviceType.AutomaticWindow || DeviceType == DeviceType.Door ||
+                        DeviceType == DeviceType.Window)
+                        return BinarySetting.Value ? "opened" : "closed";
+                    else if (DeviceType == DeviceType.Alarm)
+                        return BinarySetting.Value ? "set off" : "armed";
+                }
+                else if (Discriminator == "Continous" && ContinousSetting.HasValue)
+                {
+                    return $"{ContinousSetting:F1} ℃";
+                }
 
-                stringBuilder.Append(EnumOps.GetDeviceType(DeviceType));
-                
-                return stringBuilder.ToString();
+                return string.Empty;
             }
         }
     }
@@ -78,13 +89,13 @@ namespace IMSClient.ViewModels
     public enum DeviceType
     {
         AutomaticWindow = 1,
-        
+
         Window = 2,
-        
+
         Thermometer = 3,
-        
+
         Thermostat = 4,
-        
+
         Door = 5,
 
         Alarm = 6,
@@ -94,7 +105,7 @@ namespace IMSClient.ViewModels
     {
         public static string GetDeviceType(DeviceType deviceType)
         {
-            return Regex.Replace(Enum.GetName(typeof (DeviceType), deviceType), @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1").ToLowerInvariant();
+            return Regex.Replace(Enum.GetName(typeof(DeviceType), deviceType), @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1").ToLowerInvariant();
         }
     }
 
