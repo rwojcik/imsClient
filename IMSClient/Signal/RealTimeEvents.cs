@@ -1,4 +1,5 @@
 ﻿using System;
+using IMSClient.ViewModels;
 
 namespace IMSClient.Signal
 {
@@ -22,6 +23,14 @@ namespace IMSClient.Signal
             BinarySetting = binaryStetting;
             Discriminator = discriminator;
             Success = success;
+        }
+
+        public DeviceSetting(DeviceViewModel deviceViewModel)
+        {
+            DeviceId = deviceViewModel.DeviceId;
+            if (deviceViewModel.ContinousSetting != null) ContinousSetting = deviceViewModel.ContinousSetting.Value;
+            if (deviceViewModel.BinarySetting != null) BinarySetting = deviceViewModel.BinarySetting.Value;
+            Discriminator = deviceViewModel.Discriminator;
         }
     }
 

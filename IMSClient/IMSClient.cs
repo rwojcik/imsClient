@@ -66,8 +66,17 @@ namespace IMSClient
         private async void DashboardPageOnGroupChoose(object sender, GroupChooseEventArgs e)
         {
             var groupPage = new GroupPage(e.Group);
+
+            groupPage.DeviceChoose += GroupPage_DeviceChoose;
             
             await _navigationPage.PushAsync(groupPage);
+        }
+
+        private async void GroupPage_DeviceChoose(object sender, DeviceChooseEventArgs e)
+        {
+            var devicePage = new DevicePage(e.DeviceViewModel);
+
+            await _navigationPage.PushAsync(devicePage);
         }
 
         protected override void OnStart()

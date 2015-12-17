@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using IMSClient.Extension;
 using IMSClient.Extension.Impl;
 using IMSClient.Repository;
+using IMSClient.Signal;
 using IMSClient.ViewModels;
 using Xamarin.Forms;
 
@@ -30,17 +31,20 @@ namespace IMSClient.Page
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
         private readonly INotifyPage _notifyPage;
+        private readonly IRealTimeService _realTimeService;
         private readonly ObservableCollection<GroupViewModel> _groups;
+        
 
         public event GroupChoose GroupChoose;
 
-        public DashboardPage(IUserRepository userRepository = null, IGroupRepository groupRepository = null)
+        public DashboardPage(IUserRepository userRepository = null, IGroupRepository groupRepository = null, IRealTimeService realTimeService = null)
         {
             BindingContext = this;
             _groups = new ObservableCollection<GroupViewModel>();
 
             _userRepository = userRepository ?? DependencyService.Get<IUserRepository>();
             _groupRepository = groupRepository ?? DependencyService.Get<IGroupRepository>();
+            _realTimeService = realTimeService ?? DependencyService.Get<IRealTimeService>();
 
             _notifyPage = new NotifyPage(this);
             InitializeComponent();
@@ -63,6 +67,8 @@ namespace IMSClient.Page
 
         private async Task<bool> DownloadValues()
         {
+            _groups.Clear();
+
             var groups = await _groupRepository.GetGroupsAsync();
 
             foreach (var groupViewModel in groups)
@@ -135,7 +141,5 @@ namespace IMSClient.Page
             if (deviceGroup != null)
                 GroupChoose?.Invoke(this, new GroupChooseEventArgs(deviceGroup));
         }
-
-
     }
 }

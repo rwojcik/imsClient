@@ -13,6 +13,18 @@ using Xamarin.Forms;
 
 namespace IMSClient.Page
 {
+    public delegate void DeviceChoose(object sender, DeviceChooseEventArgs e);
+
+    public class DeviceChooseEventArgs :EventArgs
+    {
+        public DeviceViewModel DeviceViewModel { get; }
+
+        public DeviceChooseEventArgs(DeviceViewModel device)
+        {
+            DeviceViewModel = device;
+        }
+    }
+
     public partial class GroupPage : ContentPage
     {
         private readonly IUserRepository _userRepository;
@@ -21,6 +33,7 @@ namespace IMSClient.Page
         private readonly INotifyPage _notifyPage;
         private readonly ObservableCollection<DeviceViewModel> _devices;
         private readonly GroupViewModel _groupViewModel;
+        public event DeviceChoose DeviceChoose;
 
         public GroupPage(GroupViewModel groupViewModel = null, IUserRepository userRepository = null, IGroupRepository groupRepository = null, IDeviceRepository deviceRepository = null)
         {
@@ -60,6 +73,8 @@ namespace IMSClient.Page
         private async Task<bool> DownloadValues()
         {
             Debug.WriteLine($"GroupPage-DownloadValues, before download");
+
+            _devices.Clear();
 
             try
             {
@@ -120,9 +135,7 @@ namespace IMSClient.Page
 
             if (device != null)
             {
-                var devicePage = new DevicePage(device);
-
-                await Navigation.PushModalAsync(devicePage);
+                DeviceChoose?.Invoke(this, new DeviceChooseEventArgs(device));
             }
         }
 
@@ -146,9 +159,7 @@ namespace IMSClient.Page
 
             if (device != null)
             {
-                var devicePage = new DevicePage(device);
-
-                await Navigation.PushModalAsync(devicePage);
+                DeviceChoose?.Invoke(this, new DeviceChooseEventArgs(device));
             }
         }
     }

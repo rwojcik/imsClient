@@ -38,7 +38,7 @@ namespace IMSClient.Signal.Impl
                 _hubProxy.On<string>("hello", message => Hello(message));
                 _hubProxy.On("helloMsg", () => Hello("EMPTY"));
                 _hubProxy.On<long, bool, bool>("binaryDeviceUpdated", (deviceId, success, binarySetting) => InvokeDeviceUpdated(deviceId, success, binarySetting: binarySetting));
-                _hubProxy.On<long, bool, double>("binaryDeviceUpdated", (deviceId, success, continousSetting) => InvokeDeviceUpdated(deviceId, success, continousSetting));
+                _hubProxy.On<long, bool, double>("continousDeviceUpdated", (deviceId, success, continousSetting) => InvokeDeviceUpdated(deviceId, success, continousSetting));
 
                 await _hubConnection.Start();
 

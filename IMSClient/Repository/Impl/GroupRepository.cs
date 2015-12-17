@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using IMSClient.Helper;
 using IMSClient.Repository.Impl;
+using IMSClient.Signal;
 using IMSClient.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;

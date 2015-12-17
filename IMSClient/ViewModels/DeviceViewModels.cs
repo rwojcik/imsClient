@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace IMSClient.ViewModels
 {
@@ -72,6 +74,15 @@ namespace IMSClient.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public long GroupId { get; set; }
+
+        [Required]
+        public string Discriminator { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public double? ContinousSetting { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? BinarySetting { get; set; }
     }
 
     public class DeviceHistoryViewModel

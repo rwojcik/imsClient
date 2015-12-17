@@ -9,5 +9,7 @@ namespace IMSClient.Repository
         Task<IList<DeviceViewModel>> GetDevicesAsync(long groupId);
 
         Task<DeviceViewModel> GetDevice(long deviceId);
+
+        Task<bool> PutDeviceAsync(UpdateDeviceViewModel updateDeviceViewModel);
     }
 }
