@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="IMSClient.Page.DashboardPage"
-             Title="Groups">
+             x:Class="IMSClient.Page.GroupPage">
   <StackLayout>
 
     <ContentView Padding="25,15,25,15" >
-      <Label x:Name="StatusLabel" Text="Downloading groups..." VerticalOptions="Center" HorizontalOptions="Start"
+      <Label x:Name="StatusLabel" Text="Downloading devices..." VerticalOptions="Center" HorizontalOptions="Start"
              FontSize="Medium" />
     </ContentView>
     <BoxView Color="Silver" HeightRequest="2" />
@@ -15,23 +14,22 @@
       <ContentView x:Name="StatusIndicatorContentView" Padding ="0,15,0,0">
         <ActivityIndicator x:Name="StatusIndicator" IsRunning="True" />
       </ContentView>
-      <ListView x:Name="GroupsListView" ItemSelected="ListView_OnItemSelected">
+      <ListView x:Name="DevicesListView" ItemSelected="ListView_OnItemSelected" HasUnevenRows="True">
         <ListView.ItemTemplate>
           <DataTemplate>
-            <TextCell Text="{Binding Name}" Detail="{Binding Detail}" TextColor="White">
-              <TextCell.ContextActions>
+            <ViewCell>
+              <ViewCell.ContextActions>
                 <MenuItem Clicked="OnOpen" CommandParameter="{Binding .}" Text="Open" />
-              </TextCell.ContextActions>
-              <!--<StackLayout>
-                <Label FontSize="Medium" Text="{Binding Name}" />
-                <Label Text="{Binding Description}"/>
-                <Label Text="{Binding DevicesCount, StringFormat='{0} device(s) in group'}"/>
-              </StackLayout>-->
-            </TextCell>
+              </ViewCell.ContextActions>
+              <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Label FontSize="Medium" TextColor="White" Text="{Binding Name}" />
+                <Label Text="{Binding Status}"/>
+              </StackLayout>
+            </ViewCell>
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
     </StackLayout>
-    
+
   </StackLayout>
 </ContentPage>

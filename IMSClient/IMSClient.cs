@@ -55,13 +55,21 @@ namespace IMSClient
         }
 
 
-        private async void Login(object sender, LoginEventArgs loginEventArgs)
+        private async void Login(object sender, LoginEventArgs e)
         {
             var dashboardPage = new DashboardPage(_userRepository);
+            dashboardPage.GroupChoose += DashboardPageOnGroupChoose;
 
             MainPage = _navigationPage = new NavigationPage(dashboardPage);
-            
         }
+
+        private async void DashboardPageOnGroupChoose(object sender, GroupChooseEventArgs e)
+        {
+            var groupPage = new GroupPage(e.Group);
+
+            await _navigationPage.PushAsync(groupPage);
+        }
+
 
         protected override void OnStart()
         {

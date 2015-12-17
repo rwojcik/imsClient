@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using IMSClient.Helper;
 using IMSClient.Repository.Impl;
-using IMSPrototyper.ViewModels;
+using IMSClient.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
@@ -50,7 +50,7 @@ namespace IMSClient.Repository.Impl
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        Debug.WriteLine("Unsuccessful ");
+                        Debug.WriteLine($"Unsuccessful GET for /Group/, {response.StatusCode}");
                         return new List<GroupViewModel>(0);
                     }
 

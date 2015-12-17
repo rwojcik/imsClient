@@ -20,8 +20,8 @@ namespace IMSClient.Page
         private readonly IUserRepository _userRepository;
         private readonly INotifyPage _notifyPage;
         private readonly IValuesRepository _valuesRepository;
-        public Register Register;
-        public Login Login;
+        public event Register Register;
+        public event Login Login;
 
         public LoginPage(IUserRepository userRepository = null, INotifyPage notifyPage = null, IValuesRepository valuesRepository = null)
         {

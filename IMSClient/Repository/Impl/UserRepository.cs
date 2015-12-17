@@ -9,7 +9,6 @@ using IMSClient.Helper;
 using IMSClient.Model.User;
 using IMSClient.Repository.Impl;
 using IMSClient.ViewModels;
-using IMSPrototyper.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
@@ -64,8 +63,8 @@ namespace IMSClient.Repository.Impl
                     }
 
                     var result = await response.Content.ReadAsStringAsync();
-                    var token = JsonConvert.DeserializeObject<Token>(result.Replace(".expires", nameof(Token.Expires)).Replace("token_type", nameof(Token.TokenType)).Replace("access_token", nameof(Token.AccessToken)));
-                    
+                    var token = JsonConvert.DeserializeObject<Token>(result);
+
                     _userLoginModel.TokenType = token.TokenType;
                     _userLoginModel.Token = token.AccessToken;
                     _userLoginModel.TokenExpires = token.Expires;
@@ -137,6 +136,11 @@ namespace IMSClient.Repository.Impl
         public bool IsLogged()
         {
             var logged = _userLoginModel?.TokenExpires != null && _userLoginModel.TokenExpires > DateTime.Now && !string.IsNullOrWhiteSpace(_userLoginModel?.Token);
+
+            Debug.WriteLine(_userLoginModel != null
+                ? $"Is logged: {logged}, token expires > now: {_userLoginModel?.TokenExpires > DateTime.Now}, is token present: {!string.IsNullOrWhiteSpace(_userLoginModel?.Token)}"
+                : $"Is logged: {logged}, model is null");
+
             return logged;
         }
     }

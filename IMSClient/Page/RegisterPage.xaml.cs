@@ -21,7 +21,7 @@ namespace IMSClient.Page
 
         private readonly INotifyPage _notifyPage;
 
-        public Registered Registered;
+        public event Registered Registered;
 
         public RegisterPage(IUserRepository userRepository = null)
         {

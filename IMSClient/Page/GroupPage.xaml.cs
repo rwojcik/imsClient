@@ -1,9 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using IMSClient.Extension;
 using IMSClient.Extension.Impl;
@@ -13,47 +13,43 @@ using Xamarin.Forms;
 
 namespace IMSClient.Page
 {
-    public delegate void GroupChoose(object sender, GroupChooseEventArgs e);
-
-    public class GroupChooseEventArgs : EventArgs
-    {
-        public GroupChooseEventArgs(GroupViewModel @group)
-        {
-            Group = @group;
-        }
-
-        public GroupViewModel Group { get; }
-    }
-
-    public partial class DashboardPage : ContentPage
+    public partial class GroupPage : ContentPage
     {
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IDeviceRepository _deviceRepository;
         private readonly INotifyPage _notifyPage;
-        private readonly ObservableCollection<GroupViewModel> _groups;
+        private readonly ObservableCollection<DeviceViewModel> _devices;
+        private readonly GroupViewModel _groupViewModel;
 
-        public event GroupChoose GroupChoose;
-
-        public DashboardPage(IUserRepository userRepository = null, IGroupRepository groupRepository = null)
+        public GroupPage(GroupViewModel groupViewModel = null, IUserRepository userRepository = null, IGroupRepository groupRepository = null, IDeviceRepository deviceRepository = null)
         {
+            _groupViewModel = groupViewModel;
             BindingContext = this;
-            _groups = new ObservableCollection<GroupViewModel>();
+            _devices = new ObservableCollection<DeviceViewModel>();
 
             _userRepository = userRepository ?? DependencyService.Get<IUserRepository>();
             _groupRepository = groupRepository ?? DependencyService.Get<IGroupRepository>();
+            _deviceRepository = deviceRepository ?? DependencyService.Get<IDeviceRepository>();
 
             _notifyPage = new NotifyPage(this);
+
             InitializeComponent();
 
-            GroupsListView.ItemsSource = _groups;
+            DevicesListView.ItemsSource = _devices;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
+            Debug.WriteLine($"GroupPage-OnAppearing, group id: {_groupViewModel?.GroupId}");
+
             if (!_userRepository.IsLogged())
                 _notifyPage.DisplayAlert("Error", "You are not logged in!");
+
+            if (_groupViewModel?.GroupId == 0)
+                _notifyPage.DisplayAlert("Error", "Group identifier is not specified!");
 
             if (await DownloadValues())
                 ChangeToShowingResults();
@@ -63,14 +59,26 @@ namespace IMSClient.Page
 
         private async Task<bool> DownloadValues()
         {
-            var groups = await _groupRepository.GetGroupsAsync();
+            Debug.WriteLine($"GroupPage-DownloadValues, before download");
 
-            foreach (var groupViewModel in groups)
+            try
             {
-                _groups.Add(groupViewModel);
-            }
+                var devices = await _deviceRepository.GetDevicesAsync(_groupViewModel?.GroupId ?? 0);
 
-            return groups.Any();
+                Debug.WriteLine($"GroupPage-DownloadValues, downloaded: {devices.Count} device(s)");
+
+                foreach (var deviceViewModel in devices)
+                {
+                    _devices.Add(deviceViewModel);
+                }
+                
+                return devices.Any();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"GroupPage-DownloadValues, ex: {e.GetType()}, msg: {e.Message}");
+                return false;
+            }
         }
 
         private void ChangeToShowingResults()
@@ -80,7 +88,7 @@ namespace IMSClient.Page
                 StatusIndicator.IsVisible = false;
                 StatusIndicator.IsRunning = false;
                 StatusIndicatorContentView.IsVisible = false;
-                StatusLabel.Text = "Choose group to interact with";
+                StatusLabel.Text = $"Devices in {_groupViewModel.Name}";
             }
             catch (Exception e)
             {
@@ -95,7 +103,7 @@ namespace IMSClient.Page
                 StatusIndicator.IsVisible = false;
                 StatusIndicator.IsRunning = false;
                 StatusIndicatorContentView.IsVisible = false;
-                StatusLabel.Text = "There are no groups available";
+                StatusLabel.Text = "There are no devices available";
             }
             catch (Exception e)
             {
@@ -105,21 +113,11 @@ namespace IMSClient.Page
 
         private void OnOpen(object sender, EventArgs e)
         {
-            var mi = sender as MenuItem;
-            //DisplayAlert("More Context Action", mi.CommandParameter + " more context action", "OK");
 
-            var deviceGroup = mi?.CommandParameter as GroupViewModel;
-
-            if (deviceGroup != null)
-                GroupChoose?.Invoke(this, new GroupChooseEventArgs(deviceGroup));
         }
 
         private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem == null) return;
-
-            //DisplayAlert("Item selected", $"{e.SelectedItem}", "OK");
-
             try
             {
                 var listView = sender as ListView;
@@ -129,13 +127,6 @@ namespace IMSClient.Page
             {
                 Debug.WriteLine($"ex: {ex.GetType()}, msg: {ex.Message}");
             }
-
-            var deviceGroup = e.SelectedItem as GroupViewModel;
-
-            if (deviceGroup != null)
-                GroupChoose?.Invoke(this, new GroupChooseEventArgs(deviceGroup));
         }
-
-
     }
 }
