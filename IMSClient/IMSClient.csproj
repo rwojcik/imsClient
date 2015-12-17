@@ -64,6 +64,9 @@
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Repository\IValuesRepository.cs" />
     <Compile Include="Repository\Impl\ValuesRepository.cs" />
+    <Compile Include="Signal\Impl\RealTimeService.cs" />
+    <Compile Include="Signal\IRealTimeService.cs" />
+    <Compile Include="Signal\RealTimeEvents.cs" />
     <Compile Include="ViewModels\DeviceViewModels.cs" />
     <Compile Include="ViewModels\GroupViewModels.cs" />
     <Compile Include="ViewModels\Token.cs" />
@@ -135,6 +138,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IMSClient.Repository;
+using IMSClient.Signal;
 using IMSClient.ViewModels;
 using Xamarin.Forms;
 
@@ -13,11 +14,13 @@ namespace IMSClient.Page
     {
         private readonly IDeviceRepository _deviceRepository;
         private readonly DeviceViewModel _deviceViewModel;
+        private readonly IRealTimeService _realTimeService;
 
-        public DevicePage(DeviceViewModel device, IDeviceRepository deviceRepository = null)
+        public DevicePage(DeviceViewModel device, IDeviceRepository deviceRepository = null, IRealTimeService realTimeService = null)
         {
             _deviceViewModel = device;
             _deviceRepository = deviceRepository ?? DependencyService.Get<IDeviceRepository>();
+            _realTimeService = realTimeService ?? DependencyService.Get<IRealTimeService>();
 
             BindingContext = _deviceViewModel;
 
